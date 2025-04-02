@@ -3,10 +3,10 @@
 A simple URL shortener with Laravel backend and React frontend.
 
 ## Project Structure
-```MD
+```bash
 rq.fyi/
-├── rq.fyi-api/ (Laravel backend - runs on port 8000)
-└── rq.fyi-frontend/ (React frontend - runs on port 5173)
+├── rq.fyi-api/ (Laravel backend)
+└── rq.fyi-frontend/ (React frontend)
 ```
 
 
@@ -34,7 +34,7 @@ rq.fyi/
      ```bash
     cd rq.fyi-frontend
     npm install
-    npm start
+    npm run dev # or yarn / bun
 
 # Key Things to Know
 ## Backend (Laravel)
@@ -42,9 +42,12 @@ rq.fyi/
 
 Important files:
 
-- routes/api.php - where we define our API endpoints
-- app/Http/Controllers/ - where our controller logic lives (We want to version this, so we add a V1 folder, and put the controllers in there)
-- app/Models/ - where we define our data models (database tables)
+- **routes/api.php** – Defines our API endpoints.  
+- **app/Http/V1/Controllers/** – Contains our controller logic.  
+- **app/Permissions/V1/Abilities.php** – Defines token abilities based on user roles.  
+- **app/Policies/V1/** – Uses `Abilities.php` to enforce rules and restrictions on models. [Authorization Docs](https://laravel.com/docs/12.x/authorization)  
+- **app/Http/Resources/V1/** – Contains model resources that return JSON arrays. [Eloquent Resources Docs](https://laravel.com/docs/12.x/eloquent-resources)  
+- **app/Models/** – Defines our data models (database tables). [Eloquent Relationships Docs](https://laravel.com/docs/11.x/eloquent-relationships)   
 
 ## Frontend (React)
 - Uses Axios to connect to our Laravel API
@@ -63,10 +66,13 @@ Route::get('/links', [LinkController::class, 'index'])->middleware('auth:sanctum
 
 #  What We Need to Build
 ## Backend Tasks
-- Set up database tables (Yon helps with migrations)
-- A job or command to write the old database data into our newly tables (Yon will make this).
-- Create the Link model and controller
-- Implement (duplicate) the shortening logic
+- Create a job to migrate old database data into the new tables.  
+- Create the models and controllers.  
+- Implement the URL shortening logic. 
+- Define abilities in `Abilities.php`.   
+- Set up policies for access control.  
+- Create JSON resources for structured API responses.  
+- Add filters and other necessary features.  
 
 ## Frontend Tasks
 - Create a form to submit URLs
